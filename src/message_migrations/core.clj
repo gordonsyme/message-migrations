@@ -15,4 +15,7 @@
 
 (s/defn ^:always-validate process-message
   [message :- Message]
-  {:counter (inc (:counter message))})
+  (let [increment-by (or (:increment-by message)
+                         1)]
+    {:counter (+ (:counter message)
+                 increment-by)}))
