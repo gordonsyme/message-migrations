@@ -9,8 +9,9 @@
 
 (def Message
   "A schema for messages that we're going to evolve over time"
-  {:name s/Str
-   :counter s/Num})
+  {:name s/Str 
+   :counter s/Num
+   (s/optional-key :increment-by) s/Num})
 
 (s/defn ^:always-validate process-message
   [message :- Message]
