@@ -2,7 +2,7 @@
   (:require [schema.core :as s]))
 
 ;; What to demo?
-;; 1 - adding a required field
+;; 1 - adding a required field ✅
 ;; 2 - removing a field
 ;; 3 - renaming a field
 ;; 4 - changing the type of a field
@@ -11,11 +11,10 @@
   "A schema for messages that we're going to evolve over time"
   {:name s/Str 
    :counter s/Num
-   (s/optional-key :increment-by) s/Num})
+   :increment-by s/Num})
 
 (s/defn ^:always-validate process-message
   [message :- Message]
-  (let [increment-by (or (:increment-by message)
-                         1)]
+  (let [increment-by (:increment-by message)]
     {:counter (+ (:counter message)
                  increment-by)}))
