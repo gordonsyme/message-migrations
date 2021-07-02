@@ -9,7 +9,7 @@
 
 (def Message
   "A schema for messages that we're going to evolve over time"
-  {:name s/Str 
+  {(s/optional-key :name) s/Str
    :counter s/Num
    :increment-by s/Num})
 
