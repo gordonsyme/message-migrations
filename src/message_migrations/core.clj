@@ -5,20 +5,16 @@
 ;; 1 - adding a required field ✅
 ;; 2 - removing a field ✅
 ;; 3 - renaming a field ✅
-;; 4 - changing the type of a field
+;; 4 - changing the type of a field ✅
 
 (def Message
   "A schema for messages that we're going to evolve over time"
   {:counter-value s/Num
-   :increment-by (s/conditional
-                   sequential? [s/Num]
-                   :else s/Num)})
+   :increment-by [s/Num]})
 
 (s/defn ^:always-validate process-message
   [message :- Message]
   (let [{:keys [increment-by counter-value]} message
-        increment-amount (if (number? increment-by)
-                           increment-by
-                           (reduce + 0 increment-by))]
+        increment-amount (reduce + 0 increment-by)]
     (-> {:counter counter-value}
         (update :counter + increment-amount))))
