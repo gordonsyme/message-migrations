@@ -10,10 +10,15 @@
 (def Message
   "A schema for messages that we're going to evolve over time"
   {:counter-value s/Num
-   :increment-by s/Num})
+   :increment-by (s/conditional
+                   sequential? [s/Num]
+                   :else s/Num)})
 
 (s/defn ^:always-validate process-message
   [message :- Message]
-  (let [{:keys [increment-by counter-value]} message]
+  (let [{:keys [increment-by counter-value]} message
+        increment-amount (if (number? increment-by)
+                           increment-by
+                           (reduce + 0 increment-by))]
     (-> {:counter counter-value}
-        (update :counter + increment-by))))
+        (update :counter + increment-amount))))
