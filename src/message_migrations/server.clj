@@ -1,7 +1,7 @@
 (ns message-migrations.server
   (:require [cheshire.core :as json]
             [ring.adapter.jetty :as jetty]
-            [message-migrations.core :refer (process-message)])
+            [message-migrations.core :refer (deal-with-envelope)])
   (:import clojure.lang.ExceptionInfo))
 
 (defn handler
@@ -18,7 +18,7 @@
       (let [response (-> (:body request)
                          slurp
                          (json/parse-string true)
-                         process-message)]
+                         deal-with-envelope)]
         {:status 200
          :headers {"Content-Type" "application/json"}
          :body (json/generate-string response)})
